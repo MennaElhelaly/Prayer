@@ -14,16 +14,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.gms.location.*
 import com.mudalel.app.data_layer.shared_data.SharedPref
 
-class Location(var context :Context) {
+class MyLocation(var context :Context) {
     var myLong =0.0
     var myLat =0.0
     private var mFusedLocationClient: FusedLocationProviderClient =LocationServices.getFusedLocationProviderClient(context)
 
-    private fun getLastLocation() {
+     public fun getLastLocation(){
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 if (ActivityCompat.checkSelfPermission(
@@ -118,15 +117,8 @@ class Location(var context :Context) {
             PERMISSION_ID
         )
     }
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == PERMISSION_ID) {
-//            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-//                getLastLocation()
-//            }
-//        }
-//    }
+
     companion object{
-        val PERMISSION_ID = 42
+        const val PERMISSION_ID = 42
     }
 }

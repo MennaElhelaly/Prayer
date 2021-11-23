@@ -10,59 +10,17 @@ object SharedPref{
 
     fun createPrefObject(context: Context): SharedPreferences? {
         if (pref == null) {
-            pref = context.getSharedPreferences("mudalel", Context.MODE_PRIVATE)
+            pref = context.getSharedPreferences("Prayer", Context.MODE_PRIVATE)
         }
         return pref
     }
-    fun setUserName(answered: String) {
+    fun setYear(answered: String) {
         val editor = pref!!.edit()
-        editor.putString("name", answered)
+        editor.putString("year", answered)
         editor.apply()
     }
-    fun getUserName(): String? {
+    fun getYear(): String? {
         return pref!!.getString("name", "اوس")
-    }
-    fun setUserPhone(answered: String) {
-        val editor = pref!!.edit()
-        editor.putString("phone", answered)
-        editor.apply()
-    }
-    fun getUserPhone(): String? {
-        return pref!!.getString("phone", "")
-    }
-    fun setUserCityID(answered: String) {
-        val editor = pref!!.edit()
-        editor.putString("cityID", answered)
-        editor.apply()
-    }
-    fun getUserCityID(): String? {
-        return pref!!.getString("cityID", "")
-    }
-
-    fun setUserToken(answered: String) {
-        val editor = pref!!.edit()
-        editor.putString("token", answered)
-        editor.apply()
-    }
-    fun getUserToken(): String? {
-        return pref!!.getString("token", "")
-    }
-
-    fun setLang(lang: String) {
-        val editor = pref!!.edit()
-        editor.putString("lang", lang)
-        editor.apply()
-    }
-    fun getLang(): String? {
-        return pref!!.getString("lang", "ar")
-    }
-    fun setFirstTime() {
-        val editor = pref!!.edit()
-        editor.putBoolean("first" , true)
-        editor.apply()
-    }
-    fun getFirstTime(): Boolean{
-        return pref!!.getBoolean("first", false)
     }
 
     fun setMyLat(lat:String) {
@@ -82,13 +40,5 @@ object SharedPref{
         return pref!!.getString("myLong", "44.361488")
     }
 
-    fun setFCMToken(fcm:String) {
-        val editor = pref!!.edit()
-        editor.putString("FCM" , fcm)
-        editor.apply()
-    }
-    fun getFCMToken(): String?{
-        return pref!!.getString("FCM", "")
-    }
 
 }
