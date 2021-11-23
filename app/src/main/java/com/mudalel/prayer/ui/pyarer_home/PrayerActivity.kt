@@ -53,6 +53,7 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
         myLocation.getLastLocation()
         myLocation.callback = { lat, long->
             Log.i("Menna","location   "+lat +"  "+long)
+            visibleTheView()
             mylat =lat
             myLong=long
             prayerViewModel.getPrayerData(lat,long,month.toString(),year.toString())
@@ -79,7 +80,17 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
             prayerViewModel.getPrayerData(mylat,myLong,month.toString(),year.toString())
 
         }
+        binding.buttonLocation.setOnClickListener {
+            myLocation.getLastLocation()
+        }
     }
+
+    private fun visibleTheView() {
+        binding.noLocation.visibility = View.GONE
+        binding.btnLeft.visibility = View.VISIBLE
+        binding.btnRight.visibility = View.VISIBLE
+    }
+
     private fun initUI() {
         binding.recyclerDays.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -132,12 +143,19 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    if (requestCode == PERMISSION_ID) {
-        if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-            myLocation.getLastLocation()
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                myLocation.getLastLocation()
+            }
+            else
+            {
+                binding.noLocation.visibility =View.VISIBLE
+                binding.btnLeft.visibility = View.GONE
+                binding.btnRight.visibility = View.GONE
+            }
         }
-    }}
+    }
     companion object{
         const val PERMISSION_ID = 42
     }
