@@ -110,6 +110,7 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
                 if (month == currentMonth && day == currentDay && year == currentYear){
                     bindData(it.days[currentDay-1].times)
                     it.days[currentDay-1].selected = true
+                    it.days[currentDay-1].today = true
                     binding.recyclerDays.scrollToPosition(currentDay-1)
                 }
                 else{

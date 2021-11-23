@@ -25,6 +25,9 @@ class PrayerAdapter(
         else{
             holder.itemView.setBackgroundResource(R.drawable.background)
         }
+        if (daysList[position].today){
+            holder.day.text="Today"
+        }
 
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -9,7 +9,7 @@ interface PrayerApi {
     @GET("/v1/calendar?")
     suspend fun getPrayerTimes(@Query("latitude") latitude: String,
                                @Query("longitude") longitude: String ,
-                               @Query("method") method: String,
+                               @Query("month") month: String,
                                @Query("year") year: String): Response<PrayerData?>
 
 }

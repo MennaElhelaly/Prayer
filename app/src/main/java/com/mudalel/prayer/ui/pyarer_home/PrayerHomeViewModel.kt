@@ -34,7 +34,7 @@ class PrayerHomeViewModel  : ViewModel() {
             val num = item.date.gregorian.day
             val day =item.date.gregorian.weekday.en
             val times = item.timings
-            days.add(Day(num,day,times,false))
+            days.add(Day(num,day,times,false,false))
         }
         monthData.postValue(Month(name ,days))
     }

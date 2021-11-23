@@ -9,5 +9,6 @@ data class Day(
         val date: String,
         val day_en: String,
         val times: Timings,
-        var selected :Boolean
+        var selected :Boolean,
+        var today :Boolean
 )
