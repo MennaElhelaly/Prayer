@@ -1,4 +1,4 @@
-package com.mudalel.app.data_layer.remote_sourse
+package com.mudalel.prayer.data_layer.remote_sourse
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

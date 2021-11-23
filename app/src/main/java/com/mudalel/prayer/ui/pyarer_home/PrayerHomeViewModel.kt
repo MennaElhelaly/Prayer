@@ -3,7 +3,7 @@ package com.mudalel.prayer.ui.pyarer_home
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mudalel.app.data_layer.remote_sourse.RemoteDataSource
+import com.mudalel.prayer.data_layer.remote_sourse.RemoteDataSource
 import com.mudalel.prayer.data_layer.entity.Day
 import com.mudalel.prayer.data_layer.entity.Month
 import com.mudalel.prayer.data_layer.entity.PrayerData
@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class PrayerHomeViewModel  : ViewModel() {
     var prayerData = MutableLiveData<PrayerData?>()

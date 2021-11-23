@@ -1,11 +1,11 @@
-package com.mudalel.app.data_layer.remote_sourse
+package com.mudalel.prayer.data_layer.remote_sourse
 
 import android.util.Log
 import com.mudalel.prayer.data_layer.entity.PrayerData
 
 class RemoteDataSource() {
     suspend fun getPrayerTimes(lat:String,long:String,month:String,year:String): PrayerData?{
-        val response = PrayerService.prayerService.getPrayerTimes(lat,long, EGYPT_METHOD,month,year)
+        val response = PrayerService.prayerService.getPrayerTimes(lat,long,month,year)
         try {
             if (response.isSuccessful) {
                 response.body()?.let {
@@ -21,8 +21,4 @@ class RemoteDataSource() {
         }
         return null
     }
-    companion object{
-        val EGYPT_METHOD = "5"
-    }
-
 }
