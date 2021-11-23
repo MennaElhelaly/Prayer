@@ -22,9 +22,9 @@ class PrayerHomeViewModel  : ViewModel() {
 
     }
 
-    fun getPrayerData(month:String,year:String) {
+    fun getPrayerData(lat:String,lang: String,month:String,year:String) {
         CoroutineScope(Dispatchers.IO + handler).launch {
-            val response = apiRepository.getPrayerTimes("31.4270605","31.8055601",month,year)
+            val response = apiRepository.getPrayerTimes(lat,lang,month,year)
             prayerData.postValue(response)
         }
     }
@@ -36,7 +36,7 @@ class PrayerHomeViewModel  : ViewModel() {
             val num = item.date.gregorian.day
             val day =item.date.gregorian.weekday.en
             val times = item.timings
-            days.add(Day(num,day,times))
+            days.add(Day(num,day,times,false))
         }
         monthData.postValue(Month(name ,days))
     }

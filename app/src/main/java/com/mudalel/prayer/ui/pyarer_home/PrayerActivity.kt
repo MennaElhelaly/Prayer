@@ -4,7 +4,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mudalel.app.data_layer.shared_data.SharedPref
@@ -19,14 +19,20 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
     private lateinit var binding: ActivityPrayerBinding
     private lateinit var prayerViewModel: PrayerHomeViewModel
     private val calendar = Calendar.getInstance()
+    private var currentday = 0
     private var currentMonth = 0
     private var currentYear = 0
+    private var day = 0
+    private var month = 0
+    private var year = 0
+    private var mylat=""
+    private var myLong=""
     private lateinit var daysAdapter: PrayerAdapter
     private lateinit var mylocation:MyLocation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+       // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         binding = ActivityPrayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val actionBar = supportActionBar
@@ -38,63 +44,84 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
         mylocation = MyLocation(this)
         calendar.time = Date()
 
+        currentday =calendar[Calendar.DAY_OF_MONTH]
         currentMonth = calendar[Calendar.MONTH] + 1
         currentYear = calendar[Calendar.YEAR]
-        Log.i("Menna","month888    "+currentMonth +"  "+currentYear)
+
+        day = currentday
+        month =currentMonth
+        year = currentYear
+
+        Log.i("Menna","month888 $currentday   "+currentMonth +"  "+currentYear)
         SharedPref.setYear(currentYear.toString())
 
         initUI()
         mylocation.getLastLocation()
+        mylocation.callback = { lat,long->
+            Log.i("Menna","location   "+lat +"  "+long)
+            mylat =lat
+            myLong=long
+            prayerViewModel.getPrayerData(lat,long,month.toString(),year.toString())
+
+        }
+
         getData()
         loadUI()
 
         binding.btnRight.setOnClickListener {
-            ++currentMonth
-            if (currentMonth == 13){
-                currentMonth=1
-                ++currentYear
+            ++month
+            if (month == 13){
+                month=1
+                ++year
             }
-            prayerViewModel.getPrayerData(currentMonth.toString(),currentYear.toString())
+            prayerViewModel.getPrayerData(mylat,myLong,month.toString(),year.toString())
         }
         binding.btnLeft.setOnClickListener {
-            --currentMonth
-            if (currentMonth == 0){
-                currentMonth=12
-                --currentYear
+            --month
+            if (month == 0){
+                month=12
+                --year
             }
-            prayerViewModel.getPrayerData(currentMonth.toString(),currentYear.toString())
+            prayerViewModel.getPrayerData(mylat,myLong,month.toString(),year.toString())
+
         }
     }
     private fun initUI() {
         binding.recyclerDays.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = daysAdapter
-//            (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(10, 20);
-//            scrollToPosition(10);
+            scrollToPosition(10);
         }
+
     }
     private fun loadUI() {
         prayerViewModel.monthData.observe(this) {
             it?.let {
                 daysAdapter.setData(it.days)
-                binding.month.text = it.name.substring(2)
-                bindData(it.days[0].times)
+                binding.progressBar.visibility=View.GONE
+                binding.prayersView.visibility=View.VISIBLE
+                binding.month.text = it.name.substring(3)
+                if (month == currentMonth && day == currentday && year == currentYear){
+                    bindData(it.days[currentday].times)
+                    it.days[currentday-1].selected = true
+                    binding.recyclerDays.scrollToPosition(currentday-1)
+                }
+                else{
+                    binding.recyclerDays.scrollToPosition(0)
+                }
             }
         }
     }
 
     private fun bindData(it: Timings) {
         binding.fajrTime.text = it.Fajr.substring(0,5)
-        binding.dhuhrTime.text = it.Dhuhr.substring(0,5)
+        binding.dherTime.text = it.Dhuhr.substring(0,5)
         binding.asrTime.text = it.Asr.substring(0,5)
         binding.maghribTime.text = it.Maghrib.substring(0,5)
         binding.ishaTime.text = it.Isha.substring(0,5)
     }
 
     private fun getData() {
-        if (prayerViewModel.prayerData.value ==null){
-            prayerViewModel.getPrayerData(currentMonth.toString(),currentYear.toString())
-        }
         prayerViewModel.prayerData.observe(this) {
             it?.let {
                 if(it.status == "OK"){
@@ -105,6 +132,8 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
     }
     override fun onDayClick(item: Day) {
         bindData(item.times)
+        item.selected =true
+        daysAdapter.notifyDataSetChanged()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

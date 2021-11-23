@@ -6,7 +6,8 @@ data class Month(
     val days: List<Day>
 )
 data class Day(
-    val date: String,
-    val day_en: String,
-    val times: Timings
+        val date: String,
+        val day_en: String,
+        val times: Timings,
+        var selected :Boolean
 )

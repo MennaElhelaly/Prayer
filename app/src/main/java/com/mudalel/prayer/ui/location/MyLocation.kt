@@ -18,9 +18,8 @@ import com.google.android.gms.location.*
 import com.mudalel.app.data_layer.shared_data.SharedPref
 
 class MyLocation(var context :Context) {
-    var myLong =0.0
-    var myLat =0.0
-    private var mFusedLocationClient: FusedLocationProviderClient =LocationServices.getFusedLocationProviderClient(context)
+    var mFusedLocationClient: FusedLocationProviderClient =LocationServices.getFusedLocationProviderClient(context)
+    var callback:(String,String)->Unit = {lat,long->}
 
      public fun getLastLocation(){
         if (checkPermissions()) {
@@ -33,11 +32,7 @@ class MyLocation(var context :Context) {
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+
                     return
                 }
                 mFusedLocationClient.lastLocation.addOnCompleteListener(context as Activity) { task ->
@@ -45,14 +40,9 @@ class MyLocation(var context :Context) {
                     if (location == null) {
                         requestNewLocationData()
                     } else {
-                        myLat = location.latitude
-                        myLong = location.longitude
-                        SharedPref.setMyLat(myLat.toString())
-                        SharedPref.setMyLong(myLong.toString())
-                        Log.i("Menna","////////"+myLat.toString())
-                        Log.i("Menna","////////"+myLong.toString())
-
+                        callback (location.latitude.toString(),location.longitude.toString())
                     }
+
                 }
             } else {
                 Toast.makeText(context, "Turn on location", Toast.LENGTH_LONG).show()
@@ -81,12 +71,8 @@ class MyLocation(var context :Context) {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             val mLastLocation: Location = locationResult.lastLocation
-            myLat = mLastLocation.latitude
-            myLong = mLastLocation.longitude
-            SharedPref.setMyLat(myLat.toString())
-            SharedPref.setMyLong(myLong.toString())
-            Log.i("Menna","////////*** "+myLat.toString())
-            Log.i("Menna","////////*** "+myLong.toString())
+            callback (mLastLocation.latitude.toString(),mLastLocation.longitude.toString())
+
         }
     }
     private fun isLocationEnabled(): Boolean {
