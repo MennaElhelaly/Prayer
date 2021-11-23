@@ -28,7 +28,6 @@ class PrayerHomeViewModel  : ViewModel() {
             prayerData.postValue(response)
         }
     }
-
     fun mapData(data : PrayerData){
         val days :MutableList<Day> = arrayListOf()
         val name = data.allData[0].date.readable

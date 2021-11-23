@@ -1,4 +1,4 @@
-package com.mudalel.prayer.ui.location
+package com.mudalel.prayer.ui.pyarer_home.location
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -10,12 +10,10 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
-import com.mudalel.app.data_layer.shared_data.SharedPref
 
 class MyLocation(var context :Context) {
     var mFusedLocationClient: FusedLocationProviderClient =LocationServices.getFusedLocationProviderClient(context)

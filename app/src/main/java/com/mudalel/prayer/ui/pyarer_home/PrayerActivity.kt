@@ -7,11 +7,10 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mudalel.app.data_layer.shared_data.SharedPref
 import com.mudalel.prayer.data_layer.entity.Day
 import com.mudalel.prayer.data_layer.entity.Timings
 import com.mudalel.prayer.databinding.ActivityPrayerBinding
-import com.mudalel.prayer.ui.location.MyLocation
+import com.mudalel.prayer.ui.pyarer_home.location.MyLocation
 import com.mudalel.prayer.ui.pyarer_home.adapter.PrayerAdapter
 import java.util.*
 
@@ -19,7 +18,7 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
     private lateinit var binding: ActivityPrayerBinding
     private lateinit var prayerViewModel: PrayerHomeViewModel
     private val calendar = Calendar.getInstance()
-    private var currentday = 0
+    private var currentDay = 0
     private var currentMonth = 0
     private var currentYear = 0
     private var day = 0
@@ -28,11 +27,10 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
     private var mylat=""
     private var myLong=""
     private lateinit var daysAdapter: PrayerAdapter
-    private lateinit var mylocation:MyLocation
+    private lateinit var myLocation:MyLocation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         binding = ActivityPrayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val actionBar = supportActionBar
@@ -40,24 +38,20 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
 
         prayerViewModel = ViewModelProvider(this)[PrayerHomeViewModel::class.java]
         daysAdapter = PrayerAdapter(emptyList(),this)
-        SharedPref.createPrefObject(this)
-        mylocation = MyLocation(this)
+        myLocation = MyLocation(this)
         calendar.time = Date()
 
-        currentday =calendar[Calendar.DAY_OF_MONTH]
+        currentDay =calendar[Calendar.DAY_OF_MONTH]
         currentMonth = calendar[Calendar.MONTH] + 1
         currentYear = calendar[Calendar.YEAR]
-
-        day = currentday
+        day = currentDay
         month =currentMonth
         year = currentYear
 
-        Log.i("Menna","month888 $currentday   "+currentMonth +"  "+currentYear)
-        SharedPref.setYear(currentYear.toString())
-
         initUI()
-        mylocation.getLastLocation()
-        mylocation.callback = { lat,long->
+
+        myLocation.getLastLocation()
+        myLocation.callback = { lat, long->
             Log.i("Menna","location   "+lat +"  "+long)
             mylat =lat
             myLong=long
@@ -101,10 +95,11 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
                 binding.progressBar.visibility=View.GONE
                 binding.prayersView.visibility=View.VISIBLE
                 binding.month.text = it.name.substring(3)
-                if (month == currentMonth && day == currentday && year == currentYear){
-                    bindData(it.days[currentday].times)
-                    it.days[currentday-1].selected = true
-                    binding.recyclerDays.scrollToPosition(currentday-1)
+
+                if (month == currentMonth && day == currentDay && year == currentYear){
+                    bindData(it.days[currentDay-1].times)
+                    it.days[currentDay-1].selected = true
+                    binding.recyclerDays.scrollToPosition(currentDay-1)
                 }
                 else{
                     binding.recyclerDays.scrollToPosition(0)
@@ -140,7 +135,7 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     if (requestCode == PERMISSION_ID) {
         if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-            mylocation.getLastLocation()
+            myLocation.getLastLocation()
         }
     }}
     companion object{
