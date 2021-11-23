@@ -1,5 +1,6 @@
-package com.mudalel.prayer.ui.pyarer_home
+package com.mudalel.prayer.ui.pyarer_home.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,11 @@ class PrayerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.num.text=daysList[position].date
         holder.day.text=daysList[position].day_en.substring(0,3)
+        if (position==0){
+            holder.itemView.setBackgroundResource(R.drawable.selected_background)
+            holder.num.setTextColor(Color.WHITE)
+            holder.day.setTextColor(Color.WHITE)
+        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 

@@ -12,10 +12,10 @@ import com.mudalel.prayer.data_layer.entity.Day
 import com.mudalel.prayer.data_layer.entity.Timings
 import com.mudalel.prayer.databinding.ActivityPrayerBinding
 import com.mudalel.prayer.ui.location.MyLocation
-import com.mudalel.prayer.ui.location.MyLocation.Companion.PERMISSION_ID
+import com.mudalel.prayer.ui.pyarer_home.adapter.PrayerAdapter
 import java.util.*
 
-class PrayerActivity : AppCompatActivity(),PrayerAdapter.OnClickDayListener {
+class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
     private lateinit var binding: ActivityPrayerBinding
     private lateinit var prayerViewModel: PrayerHomeViewModel
     private val calendar = Calendar.getInstance()
@@ -69,8 +69,8 @@ class PrayerActivity : AppCompatActivity(),PrayerAdapter.OnClickDayListener {
         binding.recyclerDays.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = daysAdapter
-            (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(10, 20);
-            scrollToPosition(10);
+//            (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(10, 20);
+//            scrollToPosition(10);
         }
     }
     private fun loadUI() {
