@@ -8,7 +8,11 @@ data class PrayerData(
 )
 data class Data(
     val date: Date,
-    val timings: Timings
+    val timings: Timings,
+    val meta: Meta
+)
+data class Meta(
+        val timezone: String
 )
 data class Timings(
     val Asr: String,

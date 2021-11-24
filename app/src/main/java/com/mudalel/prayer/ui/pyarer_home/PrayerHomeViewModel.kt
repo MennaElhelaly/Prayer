@@ -33,6 +33,7 @@ class PrayerHomeViewModel  : ViewModel() {
         val days :MutableList<Day> = arrayListOf()
         val monthName = data.allData[0].date.gregorian.month.en
         val yearNum = data.allData[0].date.gregorian.year
+        val location = data.allData[0].meta.timezone
         val name = monthName +" "+yearNum
         for (item in data.allData){
             val num = item.date.gregorian.day
@@ -40,7 +41,7 @@ class PrayerHomeViewModel  : ViewModel() {
             val times = item.timings
             days.add(Day(num,day,times,false,false))
         }
-        monthData.postValue(Month(name ,days))
+        monthData.postValue(Month(name ,location,days))
     }
 
 }

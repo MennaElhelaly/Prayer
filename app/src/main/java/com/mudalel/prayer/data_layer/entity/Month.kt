@@ -3,6 +3,7 @@ package com.mudalel.prayer.data_layer.entity
 
 data class Month(
     val name: String,
+    var location :String,
     val days: List<Day>
 )
 data class Day(

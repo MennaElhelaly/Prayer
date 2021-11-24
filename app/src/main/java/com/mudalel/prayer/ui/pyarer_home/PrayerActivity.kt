@@ -86,6 +86,7 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
                 binding.progressBar.visibility=View.GONE
                 binding.prayersView.visibility=View.VISIBLE
                 binding.month.text = it.name
+                binding.location.text = it.location
 
                 if (month == currentMonth && day == currentDay && year == currentYear){
                     bindData(it.days[currentDay-1].times)
