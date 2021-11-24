@@ -10,14 +10,14 @@ data class Gregorian(
     val day: String,
     //val designation: Designation,
     val format: String,
-    //val month: Month,
+    val month: MonthName,
     val weekday: Weekday,
     val year: String
 )
-//data class Month(
-//    val en: String,
-//    val number: Int
-//)
+data class MonthName(
+    val en: String,
+    val number: Int
+)
 data class Weekday(
     val en: String
 )

@@ -31,7 +31,9 @@ class PrayerHomeViewModel  : ViewModel() {
     }
     fun mapData(data : PrayerData){
         val days :MutableList<Day> = arrayListOf()
-        val name = data.allData[0].date.readable
+        val monthName = data.allData[0].date.gregorian.month.en
+        val yearNum = data.allData[0].date.gregorian.year
+        val name = monthName +" "+yearNum
         for (item in data.allData){
             val num = item.date.gregorian.day
             val day =item.date.gregorian.weekday.en
