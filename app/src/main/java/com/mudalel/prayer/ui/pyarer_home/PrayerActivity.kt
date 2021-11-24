@@ -3,7 +3,6 @@ package com.mudalel.prayer.ui.pyarer_home
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,7 +42,7 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
 
         currentDay =calendar[Calendar.DAY_OF_MONTH]
         currentMonth = calendar[Calendar.MONTH] + 1
-        currentYear = calendar[Calendar.YEAR]
+        currentYear = calendar[Calendar.MONTH] + 1
         day = currentDay
         month =currentMonth
         year = currentYear
@@ -52,15 +51,13 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
 
         myLocation.getLastLocation()
         myLocation.callback = { lat, long->
-            Log.i("Menna","location   "+lat +"  "+long)
             visibleTheView()
             mylat =lat
             myLong=long
             prayerViewModel.getPrayerData(lat,long,month.toString(),year.toString())
-
         }
 
-        getData()
+        sendDataToEdit()
         loadUI()
 
         binding.btnRight.setOnClickListener {
@@ -83,12 +80,6 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
         binding.buttonLocation.setOnClickListener {
             myLocation.getLastLocation()
         }
-    }
-
-    private fun visibleTheView() {
-        binding.noLocation.visibility = View.GONE
-        binding.btnLeft.visibility = View.VISIBLE
-        binding.btnRight.visibility = View.VISIBLE
     }
 
     private fun initUI() {
@@ -128,7 +119,7 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
         binding.ishaTime.text = it.Isha.substring(0,5)
     }
 
-    private fun getData() {
+    private fun sendDataToEdit() {
         prayerViewModel.prayerData.observe(this) {
             it?.let {
                 if(it.status == "OK"){
@@ -141,6 +132,11 @@ class PrayerActivity : AppCompatActivity(), PrayerAdapter.OnClickDayListener {
         bindData(item.times)
         item.selected =true
         daysAdapter.notifyDataSetChanged()
+    }
+    private fun visibleTheView() {
+        binding.noLocation.visibility = View.GONE
+        binding.btnLeft.visibility = View.VISIBLE
+        binding.btnRight.visibility = View.VISIBLE
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

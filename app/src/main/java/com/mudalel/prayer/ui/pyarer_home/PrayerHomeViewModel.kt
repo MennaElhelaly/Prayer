@@ -11,11 +11,13 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class PrayerHomeViewModel  : ViewModel() {
     var prayerData = MutableLiveData<PrayerData?>()
     var apiRepository: RemoteDataSource = RemoteDataSource()
     var monthData = MutableLiveData<Month?>()
+
     val handler = CoroutineExceptionHandler { _, exception ->
         Log.e("HANDLER", "CoroutineExceptionHandler got $exception")
 
